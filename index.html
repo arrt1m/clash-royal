@@ -10,48 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
+        /* --- Анимации --- */
         @keyframes pulseGlow {
-            0% {
-                box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset;
-            }
-            50% {
-                box-shadow: 0 0 12px rgba(195, 106, 255, 0.7), 0 0 24px rgba(195, 106, 255, 0.5), 0 0 6px rgba(195, 106, 255, 0.3) inset;
-            }
-            100% {
-                box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset;
-            }
+            0% { box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset; }
+            50% { box-shadow: 0 0 12px rgba(195, 106, 255, 0.7), 0 0 24px rgba(195, 106, 255, 0.5), 0 0 6px rgba(195, 106, 255, 0.3) inset; }
+            100% { box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset; }
         }
 
         @keyframes shimmer {
-            0% {
-                transform: translateX(-100%) skewX(-30deg);
-            }
-            100% {
-                transform: translateX(200%) skewX(-30deg);
-            }
+            0% { transform: translateX(-100%) skewX(-30deg); }
+            100% { transform: translateX(200%) skewX(-30deg); }
         }
 
-        @keyframes selectedPulse { /* Новая анимация для выбранной карты */
-            0% {
-                box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; 
-            }
-            50% {
-                box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset;
-            }
-            100% {
-                box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset;
-            }
+        @keyframes selectedPulse {
+            0% { box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; }
+            50% { box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset; }
+            100% { box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; }
         }
 
-        .selected {
-            /* Увеличено желтое свечение и добавлена анимация */
-            box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset !important; 
-            animation: selectedPulse 1.5s infinite ease-in-out; /* Применяем анимацию пульсации */
-            border-color: transparent;
-        }
-
+        /* --- Основные стили --- */
         body {
-            background-image: url('https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg');
+            background-image: url('https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg'); /* Фон по умолчанию для первого экрана */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -64,6 +43,15 @@
             justify-content: center;
             min-height: 100vh;
             padding: 1rem; 
+            position: relative; 
+            transition: background-image 0.5s ease-in-out; /* Плавный переход фона */
+        }
+
+        /* --- Экран 1: Выбор Карты --- */
+        .selected {
+            box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset !important; 
+            animation: selectedPulse 1.5s infinite ease-in-out; 
+            border-color: transparent;
         }
 
         .card-grid {
@@ -84,12 +72,9 @@
             transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             border-radius: 20px; 
             animation: pulseGlow 2s infinite ease-in-out;
-            -webkit-clip-path: none;
-            clip-path: none;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); 
         }
 
-        /* Эффект мерцания должен быть и для выбранной карты */
         .card-container::after {
             content: '';
             position: absolute;
@@ -97,12 +82,7 @@
             left: 0;
             width: 50%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.2) 50%, 
-                rgba(255, 255, 255, 0) 100%
-            );
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
             transform: translateX(-100%) skewX(-30deg);
             animation: shimmer 3s infinite linear;
             animation-delay: var(--animation-delay, 0s);
@@ -117,8 +97,7 @@
         
         .card-container.selected:hover {
             transform: scale(1.05);
-            /* При наведении на выбранную карту свечение остается тем же, но эффект scale сохраняется */
-            box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset !important; /* Усилил свечение при наведении на выбранную */
+            box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset !important; 
         }
 
         .card-image {
@@ -133,6 +112,7 @@
             z-index: 1; 
         }
         
+        /* --- Общая кнопка 'OK' / 'Готово' --- */
         .ok-button {
             background-color: #3b82f6; 
             color: white;
@@ -143,6 +123,7 @@
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Luckiest Guy', cursive;
             border: 2px solid #60a5fa; 
+            cursor: pointer;
         }
 
         .ok-button:hover {
@@ -150,7 +131,100 @@
             box-shadow: 0 0 15px #2563eb, 0 0 25px rgba(37, 99, 235, 0.8);
         }
 
-        /* Адаптация для мобильных */
+        /* --- Экран 2: Ввод Никнейма --- */
+        #username-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px; 
+            padding: 1rem;
+            z-index: 10;
+        }
+
+        .username-title {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+
+        .username-plaque {
+            background-color: rgba(19, 7, 51, 0.85); 
+            border: 4px solid #6a0dad; 
+            box-shadow: 0 0 20px #a700ff, 0 0 30px rgba(167, 0, 255, 0.5) inset; 
+            border-radius: 1.5rem; 
+            padding: 2rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem; 
+        }
+
+        .username-subtitle {
+            font-size: 1.5rem;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .username-input {
+            background-color: rgba(0, 0, 0, 0.3); 
+            border: 3px solid #FFD700; 
+            box-shadow: 0 0 15px #FFD700; 
+            border-radius: 0.75rem; 
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 0.75rem;
+            width: 100%;
+            outline: none;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .username-input:focus {
+            background-color: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 25px #FFD700;
+        }
+
+        .confirm-button {
+            background: linear-gradient(to bottom, #00e676, #00c853); 
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            width: 80%;
+            box-shadow: 0 0 20px #00e676, 0 5px 10px rgba(0, 0, 0, 0.3);
+            border: 2px solid #69f0ae;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .confirm-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px #00e676, 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Плавающие иконки (Эмодзи) - Убраны --- */
+        /*
+        .floating-icon {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.8;
+            z-index: 0;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        .icon-trophy { top: 10%; left: 15%; }
+        .icon-swords { top: 10%; right: 15%; }
+        .icon-shield { bottom: 10%; left: 15%; }
+        .icon-crown { bottom: 10%; right: 15%; }
+        .icon-crown-sm1 { top: 20%; left: 40%; font-size: 1.5rem; }
+        .icon-crown-sm2 { top: 20%; right: 40%; font-size: 1.5rem; }
+        */
+
+
+        /* --- Адаптация --- */
         @media (max-width: 768px) {
             .card-grid {
                 grid-template-columns: repeat(2, 1fr); 
@@ -160,82 +234,149 @@
                 font-size: 1.5rem;
                 padding: 0.6rem 2.5rem;
             }
+            .username-title { font-size: 2rem; }
+            .username-subtitle { font-size: 1.25rem; }
+            .username-plaque { padding: 1.5rem; }
+            /*
+            .floating-icon { font-size: 2rem; }
+            .icon-trophy { top: 5%; left: 5%; }
+            .icon-swords { top: 5%; right: 5%; }
+            .icon-shield { bottom: 5%; left: 5%; }
+            .icon-crown { bottom: 5%; right: 5%; }
+            */
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <div class="card-grid">
-        
-        <!-- Карточка 1: Бревно --><div class="card-container" style="--animation-delay: 0.1s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/d/da/%D0%91%D1%80%D0%B5%D0%B2%D0%BD%D0%BE.png/revision/latest?cb=20220425054758&path-prefix=ru" alt="Бревно" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
-        
-        <!-- Карточка 2: Мегарыцарь --><div class="card-container" style="--animation-delay: 0.3s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/d/d2/%D0%9C%D0%B5%D0%B3%D0%B0%D1%80%D1%8B%D1%86%D0%B0%D1%80%D1%8C.png/revision/latest?cb=20220425054945&path-prefix=ru" alt="Мегарыцарь" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+    <!-- Плавающие иконки (Эмодзи) - Убраны -->
+    <!--
+    <span class="floating-icon icon-trophy">🏆</span>
+    <span class="floating-icon icon-swords">⚔️</span>
+    <span class="floating-icon icon-shield">🛡️</span>
+    <span class="floating-icon icon-crown">👑</span>
+    <span class="floating-icon icon-crown-sm1">👑</span>
+    <span class="floating-icon icon-crown-sm2">👑</span>
+    -->
+
+
+    <!-- Экран 1: Выбор карты --><main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10">
+        <div class="card-grid">
+            
+            <!-- Карточка 1: Бревно --><div class="card-container" style="--animation-delay: 0.1s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/d/da/%D0%91%D1%80%D0%B5%D0%B2%D0%BD%D0%BE.png/revision/latest?cb=20220425054758&path-prefix=ru" alt="Бревно" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+            
+            <!-- Карточка 2: Мегарыцарь --><div class="card-container" style="--animation-delay: 0.3s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/d/d2/%D0%9C%D0%B5%D0%B3%D0%B0%D1%80%D1%8B%D1%86%D0%B0%D1%80%D1%8C.png/revision/latest?cb=20220425054945&path-prefix=ru" alt="Мегарыцарь" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+
+            <!-- Карточка 3: Всадница на баране --><div class="card-container" style="--animation-delay: 0.5s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/7/75/%D0%92%D1%81%D0%B0%D0%B4%D0%BD%D0%B8%D1%86%D0%B0_%D0%BD%D0%B0_%D0%B1%D0%B0%D1%80%D0%B0%D0%BD%D0%B5.png/revision/latest?cb=20220425054809&path-prefix=ru" alt="Всадница на баране" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+
+            <!-- Карточка 4: Громовержец --><div class="card-container" style="--animation-delay: 0.2s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/e/ed/%D0%93%D1%80%D0%BE%D0%BC%D0%BE%D0%B2%D0%B5%D1%80%D0%B6%D0%B5%D1%86.png/revision/latest?cb=20220425054814&path-prefix=ru" alt="Громовержец" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+
+            <!-- Карточка 5: Пламенный дракон (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.4s">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/inferno-dragon.png" alt="Пламенный дракон" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+            
+            <!-- Карточка 6: Спарки (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.0s">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/sparky.png" alt="Спарки" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+
+            <!-- Карточка 7: Шахтёр --><div class="card-container" style="--animation-delay: 0.2s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/0/0b/%D0%A8%D0%B0%D1%85%D1%82%D1%91%D1%80.png/revision/latest?cb=20220425055029&path-prefix=ru" alt="Шахтёр" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
+
+            <!-- Карточка 8: Кладбище --><div class="card-container" style="--animation-delay: 0.4s">
+                <img src="https://static.wikia.nocookie.net/clash-royale/images/4/4b/%D0%9A%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5.png/revision/latest?cb=20220425054826&path-prefix=ru" alt="Кладбище" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+            </div>
         </div>
 
-        <!-- Карточка 3: Всадница на баране (Из вашего запроса) --><div class="card-container" style="--animation-delay: 0.5s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/7/75/%D0%92%D1%81%D0%B0%D0%B4%D0%BD%D0%B8%D1%86%D0%B0_%D0%BD%D0%B0_%D0%B1%D0%B0%D1%80%D0%B0%D0%BD%D0%B5.png/revision/latest?cb=20220425054809&path-prefix=ru" alt="Всадница на баране" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
+        <button id="okButton" class="ok-button">
+            OK
+        </button>
+    </main>
 
-        <!-- Карточка 4: Громовержец (Из вашего запроса) --><div class="card-container" style="--animation-delay: 0.2s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/e/ed/%D0%93%D1%80%D0%BE%D0%BC%D0%BE%D0%B2%D0%B5%D1%80%D0%B6%D0%B5%D1%86.png/revision/latest?cb=20220425054814&path-prefix=ru" alt="Громовержец" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+    <!-- Экран 2: Ввод никнейма (изначально скрыт) --><main id="username-screen" class="hidden">
+        <h1 class="username-title">CLASH ROYALE</h1>
+        <div class="username-plaque">
+            <h2 class="username-subtitle">Choose Your Nickname</h2>
+            <input type="text" class="username-input" placeholder="Zerith" value="Zerith">
+            <button class="confirm-button">
+                <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </button>
         </div>
+    </main>
 
-        <!-- Карточка 5: Пламенный дракон (Из вашего запроса) --><div class="card-container" style="--animation-delay: 0.4s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/8/8b/%D0%9F%D0%BB%D0%B0%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B4%D1%80%D0%B0%D0%BA%D0%BE%D0%BD.png/revision/latest?cb=20220425054958&path-prefix=ru" alt="Пламенный дракон" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
-        
-        <!-- Карточка 6: Спарки (Из вашего запроса) --><div class="card-container" style="--animation-delay: 0.0s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/2/20/%D0%A1%D0%BF%D0%B0%D1%80%D0%BA%D0%B8.png/revision/latest?cb=20220425055024&path-prefix=ru" alt="Спарки" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
-
-        <!-- Карточка 7: Шахтёр (Из вашего запроса) --><div class="card-container" style="--animation-delay: 0.2s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/0/0b/%D0%A8%D0%B0%D1%85%D1%82%D1%91%D1%80.png/revision/latest?cb=20220425055029&path-prefix=ru" alt="Шахтёр" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
-
-        <!-- Карточка 8: Кладбище --><div class="card-container" style="--animation-delay: 0.4s">
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/4/4b/%D0%9A%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5.png/revision/latest?cb=20220425054826&path-prefix=ru" alt="Кладбище" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
-        </div>
-    </div>
-
-    <button id="okButton" class="ok-button">
-        OK
-    </button>
 
     <script>
         const cards = document.querySelectorAll('.card-container');
+        const okButton = document.getElementById('okButton');
+        const cardSelectionScreen = document.getElementById('card-selection-screen');
+        const usernameScreen = document.getElementById('username-screen');
+        const body = document.body; // Получаем элемент body
+
+        const defaultBackground = 'url("https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg")';
+        const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")';
         
         cards.forEach(card => {
             card.addEventListener('click', () => {
                 const isSelected = card.classList.contains('selected');
-                
                 cards.forEach(c => c.classList.remove('selected'));
-                
                 if (!isSelected) {
                     card.classList.add('selected');
                 }
             });
         });
 
-        document.getElementById('okButton').addEventListener('click', function() {
-            // Здесь может быть действие по нажатию кнопки, например, возврат на главный экран
-            // window.location.href = './index.html'; 
-            console.log("Кнопка 'OK' нажата");
+        okButton.addEventListener('click', function() {
+            const selected = document.querySelector('.card-container.selected');
+            
+            if (selected) {
+                // Изменяем фон body для второго экрана
+                body.style.backgroundImage = usernameBackground;
+
+                // Скрываем экран выбора карт
+                cardSelectionScreen.classList.add('hidden');
+                
+                // Показываем экран ввода имени
+                usernameScreen.classList.remove('hidden');
+                usernameScreen.classList.add('flex', 'flex-col', 'items-center', 'justify-center');
+
+            } else {
+                console.log("Карта не выбрана");
+                okButton.style.animation = 'shake 0.5s ease';
+                setTimeout(() => { okButton.style.animation = ''; }, 500);
+            }
         });
 
-        // Добавляем обработчики ошибок к изображениям, чтобы показать плейсхолдер, если ссылка не работает
+        // Добавляем обработчики ошибок к изображениям, чтобы показать плейсхолдер
         document.querySelectorAll('.card-image').forEach(img => {
             img.addEventListener('error', function() {
-                // Если src уже плейсхолдер, ничего не делаем, чтобы избежать бесконечного цикла
                 if (this.src.startsWith('https://placehold.co/')) return;
-                
-                // Устанавливаем плейсхолдер
                 this.src = 'https://placehold.co/200x260/2a0a2a/FFD700?text=Image+Error';
-                this.style.objectFit = 'contain'; // Убедимся, что текст плейсхолдера виден
+                this.style.objectFit = 'contain';
             });
         });
+
+        // CSS для анимации "покачивания" (если карта не выбрана)
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
     </script>
 </body>
 </html>
