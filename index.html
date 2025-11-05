@@ -53,6 +53,11 @@
             animation: selectedPulse 1.5s infinite ease-in-out; 
             border-color: transparent;
         }
+        
+        /* Прячем эффект мерцания у выбранной карты, чтобы был виден inset-glow */
+        .selected::after {
+            display: none;
+        }
 
         .card-grid {
             display: grid;
