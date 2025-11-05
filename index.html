@@ -27,6 +27,17 @@
             50% { box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset; }
             100% { box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; }
         }
+        
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px #FFD700, 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 15px #FFF8E1, 0 0 30px rgba(255, 215, 0, 0.9); }
+        }
+        
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
 
         /* --- Основные стили --- */
         body {
@@ -52,7 +63,7 @@
             box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset !important; 
             animation: selectedPulse 1.5s infinite ease-in-out; 
             border-color: transparent;
-            overflow: visible; /* ИСПРАВЛЕНИЕ: Позволяем glow выйти за пределы */
+            overflow: visible !important; /* ИСПРАВЛЕНИЕ: Позволяем glow выйти за пределы */
         }
 
         /* Прячем эффект мерцания у выбранной карты, чтобы был виден inset-glow */
@@ -137,19 +148,12 @@
             box-shadow: 0 0 15px #2563eb, 0 0 25px rgba(37, 99, 235, 0.8);
         }
 
-        /* --- Экран 2: Ввод Никнейма (теперь отдельный экран) --- */
+        /* --- Экран 2: Ввод Никнейма (адаптирован для мобильных) --- */
         #username-screen {
-            /* position: fixed; -- Убрано */
-            /* top: 0; -- Убрано */
-            /* left: 0; -- Убрано */
             width: 100%;
-            /* height: 100%; -- Убрано */
-            /* background-color: rgba(0, 0, 0, 0.7); -- Убрано */
-            /* display: none; -- Управляется классом hidden */
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* z-index: 50; -- Убрано */
             padding: 1rem;
         }
 
@@ -158,6 +162,17 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
             margin-bottom: 1rem;
             color: #FFD700;
+            animation: textGlow 2s infinite ease-in-out; /* Мерцание для заголовка */
+        }
+        
+        /* Уменьшаем максимальную ширину плашки для мобильных */
+        .username-plaque-wrapper {
+            width: 90%; /* Занимает 90% ширины экрана на мобильных */
+            max-width: 350px; /* Ограничиваем максимальную ширину */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .username-plaque {
@@ -165,17 +180,16 @@
             border: 4px solid #6a0dad; 
             box-shadow: 0 0 20px #a700ff, 0 0 30px rgba(167, 0, 255, 0.5) inset; 
             border-radius: 1.5rem; 
-            padding: 2rem;
+            padding: 1.5rem; /* Немного меньше отступы */
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem; 
-            /* z-index: 51; -- Убрано */
+            gap: 1rem; /* Меньше расстояние между элементами */
         }
 
         .username-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.25rem; /* Чуть меньше для мобильных */
             color: #FFD700;
             text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
         }
@@ -187,7 +201,7 @@
             border-radius: 0.75rem; 
             color: white;
             font-family: 'Inter', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.1rem; /* Чуть меньше размер шрифта */
             font-weight: 700;
             text-align: center;
             padding: 0.75rem;
@@ -203,15 +217,15 @@
 
         /* Стиль для плейсхолдера */
         .username-input::placeholder {
-            color: #9ca3af; /* Серый цвет (Tailwind gray-400) */
-            font-weight: 400; /* Убираем жирность у плейсхолдера */
+            color: #9ca3af; 
+            font-weight: 400; 
             opacity: 0.8;
         }
 
         .confirm-button {
             background: linear-gradient(to bottom, #00e676, #00c853); 
             border-radius: 0.75rem;
-            padding: 0.75rem;
+            padding: 0.6rem; /* Меньше паддинг */
             width: 80%;
             box-shadow: 0 0 20px #00e676, 0 5px 10px rgba(0, 0, 0, 0.3);
             border: 2px solid #69f0ae;
@@ -224,25 +238,65 @@
             box-shadow: 0 0 30px #00e676, 0 8px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* --- Плавающие иконки (Эмодзи) - Возвращены --- */
+        /* --- Плавающие иконки (Эмодзи) --- */
         
         .floating-icon {
             position: absolute;
-            font-size: 2.5rem;
+            font-size: 2rem; /* Меньше для мобильных */
             opacity: 0.8;
             z-index: 0;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
-        .icon-trophy { top: 10%; left: 15%; }
-        .icon-swords { top: 10%; right: 15%; }
-        .icon-shield { bottom: 10%; left: 15%; }
-        .icon-crown { bottom: 10%; right: 15%; }
-        .icon-crown-sm1 { top: 20%; left: 40%; font-size: 1.5rem; }
-        .icon-crown-sm2 { top: 20%; right: 40%; font-size: 1.5rem; }
+        .icon-trophy { top: 5%; left: 10%; } /* Позиции адаптированы */
+        .icon-swords { top: 5%; right: 10%; }
+        .icon-shield { bottom: 5%; left: 10%; }
+        .icon-crown { bottom: 5%; right: 10%; }
+        .icon-crown-sm1 { top: 15%; left: 30%; font-size: 1.2rem; }
+        .icon-crown-sm2 { top: 15%; right: 30%; font-size: 1.2rem; }
         
+        /* --- Модальное окно (Success Modal) --- */
+        #success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        /* Добавляем явное правило для скрытия, если класс 'hidden' присутствует */
+        #success-modal.hidden {
+            display: none;
+        }
 
 
-        /* --- Адаптация --- */
+        .success-box {
+            background-color: #2c0b6b; /* Темно-фиолетовый */
+            border: 5px solid #FFD700;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            animation: bounceIn 0.5s ease-out;
+            box-shadow: 0 0 30px #FFD700, 0 0 50px rgba(255, 215, 0, 0.5);
+            max-width: 90%; /* Адаптивность */
+        }
+        
+        .success-text {
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 8px #FFD700;
+        }
+        .success-emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+
+        /* --- Адаптация для мобильных --- */
         @media (max-width: 768px) {
             .card-grid {
                 grid-template-columns: repeat(2, 1fr); 
@@ -252,57 +306,75 @@
                 font-size: 1.5rem;
                 padding: 0.6rem 2.5rem;
             }
-            .username-title { font-size: 2rem; }
-            .username-subtitle { font-size: 1.25rem; }
-            .username-plaque { padding: 1.5rem; }
-            
-            .floating-icon { font-size: 2rem; }
-            .icon-trophy { top: 5%; left: 5%; }
-            .icon-swords { top: 5%; right: 5%; }
-            .icon-shield { bottom: 5%; left: 5%; }
-            .icon-crown { bottom: 5%; right: 5%; }
-            
+            .success-text {
+                font-size: 1.5rem;
+            }
+            /* Позиции иконок для мобильных */
+            .icon-trophy { top: 3%; left: 5%; font-size: 1.8rem; }
+            .icon-swords { top: 3%; right: 5%; font-size: 1.8rem; }
+            .icon-shield { bottom: 3%; left: 5%; font-size: 1.8rem; }
+            .icon-crown { bottom: 3%; right: 5%; font-size: 1.8rem; }
+            .icon-crown-sm1 { top: 12%; left: 25%; font-size: 1rem; }
+            .icon-crown-sm2 { top: 12%; right: 25%; font-size: 1rem; }
+        }
+        /* Адаптация для очень узких экранов */
+        @media (max-width: 380px) {
+            .card-grid {
+                gap: 0.5rem;
+            }
+            .username-title {
+                font-size: 2rem; /* Уменьшаем заголовок CLASH ROYALE */
+            }
+            .username-subtitle {
+                font-size: 1.1rem; /* Уменьшаем подзаголовок */
+            }
+            .username-input {
+                font-size: 1rem; /* Уменьшаем текст в инпуте */
+            }
+            .success-text {
+                font-size: 1.2rem;
+            }
+            .success-emoji {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <!-- Плавающие иконки (Эмодзи) - ПЕРЕМЕЩЕНЫ -->
-    
-    <!-- Экран 1: Выбор карты -->
-    <main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10"> <!-- ИСПРАВЛЕНИЕ: Добавлен ID и классы -->
+    <!-- Экран 1: Выбор карты --><main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10">
         <div class="card-grid">
             
             <!-- Карточка 1: Бревно (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.1s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/the-log.png" alt="Бревно" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/the-log.png" alt="The Log" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
             
             <!-- Карточка 2: Мегарыцарь (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.3s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/mega-knight.png" alt="Мегарыцарь" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/mega-knight.png" alt="Mega Knight" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
             <!-- Карточка 3: Всадница на баране (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.5s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/ram-rider.png" alt="Всадница на баране" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/ram-rider.png" alt="Ram Rider" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
             <!-- Карточка 4: Громовержец (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.2s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/electro-wizard.png" alt="Громовержец" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/electro-wizard.png" alt="Electro Wizard" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
             <!-- Карточка 5: Пламенный дракон (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.4s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/inferno-dragon.png" alt="Пламенный дракон" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/inferno-dragon.png" alt="Inferno Dragon" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
             
             <!-- Карточка 6: Спарки (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.0s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/sparky.png" alt="Спарки" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/sparky.png" alt="Sparky" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
             <!-- Карточка 7: Шахтёр (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.2s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/miner.png" alt="Шахтёр" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/miner.png" alt="Miner" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
             <!-- Карточка 8: Кладбище (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.4s">
-                <img src="https://cdn.royaleapi.com/static/img/cards-150/graveyard.png" alt="Кладбище" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
+                <img src="https://cdn.royaleapi.com/static/img/cards-150/graveyard.png" alt="Graveyard" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
         </div>
 
@@ -312,25 +384,35 @@
     </main>
 
     <!-- Экран 2: Ввод никнейма (изначально скрыт) --><main id="username-screen" class="hidden">
-        <!-- Плавающие иконки (Эмодзи) - Теперь здесь -->
-        <span class="floating-icon icon-trophy">🏆</span>
+        
+        <!-- Плавающие иконки (Эмодзи) - Теперь здесь --><span class="floating-icon icon-trophy">🏆</span>
         <span class="floating-icon icon-swords">⚔️</span>
         <span class="floating-icon icon-shield">🛡️</span>
         <span class="floating-icon icon-crown">👑</span>
         <span class="floating-icon icon-crown-sm1">👑</span>
         <span class="floating-icon icon-crown-sm2">👑</span>
 
-        <h1 class="username-title">CLASH ROYALE</h1>
-        <div class="username-plaque">
-            <h2 class="username-subtitle">Choose Your Nickname</h2>
-            <input type="text" class="username-input" placeholder="Enter nickname ...">
-            <button class="confirm-button">
-                <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-            </button>
+        <!-- Убран <h1 class="username-title">CLASH ROYALE</h1> -->
+        
+        <!-- Обертка для центрирования плашки на мобильных --><div class="username-plaque-wrapper">
+            <div class="username-plaque">
+                <h2 class="username-subtitle">Choose Your Nickname</h2>
+                <input type="text" class="username-input" placeholder="Enter nickname ...">
+                <button id="confirmButton" class="confirm-button">
+                    <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </main>
+
+    <!-- Модальное окно (Success Modal) --><div id="success-modal" class="hidden">
+        <div class="success-box">
+            <div class="success-emoji">🎉</div>
+            <p class="success-text">ADDED TO YOUR ACCOUNT!</p>
+        </div>
+    </div>
 
 
     <script>
@@ -338,11 +420,12 @@
         const okButton = document.getElementById('okButton');
         const cardSelectionScreen = document.getElementById('card-selection-screen');
         const usernameScreen = document.getElementById('username-screen');
-        const confirmButton = document.querySelector('.confirm-button'); // Кнопка-галочка
+        const confirmButton = document.getElementById('confirmButton'); 
+        const successModal = document.getElementById('success-modal');
         const body = document.body; 
 
         const defaultBackground = 'url("https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg")';
-        const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")'; // Фон для второго экрана
+        const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")'; 
         
         cards.forEach(card => {
             card.addEventListener('click', () => {
@@ -378,20 +461,28 @@
 
         // Клик на галку
         confirmButton.addEventListener('click', () => {
-            // usernameScreen.style.display = 'none'; // Логика модального окна (убрана)
-            const nickname = document.querySelector('.username-input').value;
-            console.log("Никнейм:", nickname);
-            // Здесь может быть переход на следующий экран, если он будет
-        });
-
-        // Логика закрытия модального окна (убрана)
-        /*
-        usernameScreen.addEventListener('click', (e) => {
-            if (e.target === usernameScreen) {
-                usernameScreen.style.display = 'none';
+            const nicknameInput = document.querySelector('.username-input');
+            const nickname = nicknameInput.value.trim();
+            
+            if (nickname.length > 0) {
+                console.log("Никнейм:", nickname);
+                // Показываем модальное окно
+                successModal.classList.remove('hidden');
+                
+                // Скрываем модальное окно через 2 секунды
+                setTimeout(() => {
+                    successModal.classList.add('hidden');
+                }, 2000);
+            } else {
+                // Если никнейм пуст, можно добавить визуальный фидбек
+                nicknameInput.style.border = '3px solid red';
+                nicknameInput.style.boxShadow = '0 0 15px red';
+                setTimeout(() => {
+                    nicknameInput.style.border = '3px solid #FFD700';
+                    nicknameInput.style.boxShadow = '0 0 15px #FFD700';
+                }, 500);
             }
         });
-        */
 
         // Добавляем обработчики ошибок к изображениям, чтобы показать плейсхолдер
         document.querySelectorAll('.card-image').forEach(img => {
