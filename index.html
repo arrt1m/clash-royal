@@ -52,6 +52,12 @@
             box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset !important; 
             animation: selectedPulse 1.5s infinite ease-in-out; 
             border-color: transparent;
+            overflow: visible; /* ИСПРАВЛЕНИЕ: Позволяем glow выйти за пределы */
+        }
+
+        /* Прячем эффект мерцания у выбранной карты, чтобы был виден inset-glow */
+        .selected::after {
+            display: none;
         }
 
         .card-grid {
@@ -131,16 +137,20 @@
             box-shadow: 0 0 15px #2563eb, 0 0 25px rgba(37, 99, 235, 0.8);
         }
 
-        /* --- Экран 2: Ввод Никнейма --- */
+        /* --- Экран 2: Ввод Никнейма (теперь отдельный экран) --- */
         #username-screen {
-            display: flex;
+            /* position: fixed; -- Убрано */
+            /* top: 0; -- Убрано */
+            /* left: 0; -- Убрано */
+            width: 100%;
+            /* height: 100%; -- Убрано */
+            /* background-color: rgba(0, 0, 0, 0.7); -- Убрано */
+            /* display: none; -- Управляется классом hidden */
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            max-width: 400px; 
+            /* z-index: 50; -- Убрано */
             padding: 1rem;
-            z-index: 10;
         }
 
         .username-title {
@@ -161,6 +171,7 @@
             flex-direction: column;
             align-items: center;
             gap: 1.5rem; 
+            /* z-index: 51; -- Убрано */
         }
 
         .username-subtitle {
@@ -190,6 +201,13 @@
             box-shadow: 0 0 25px #FFD700;
         }
 
+        /* Стиль для плейсхолдера */
+        .username-input::placeholder {
+            color: #9ca3af; /* Серый цвет (Tailwind gray-400) */
+            font-weight: 400; /* Убираем жирность у плейсхолдера */
+            opacity: 0.8;
+        }
+
         .confirm-button {
             background: linear-gradient(to bottom, #00e676, #00c853); 
             border-radius: 0.75rem;
@@ -206,8 +224,8 @@
             box-shadow: 0 0 30px #00e676, 0 8px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* --- Плавающие иконки (Эмодзи) - Убраны --- */
-        /*
+        /* --- Плавающие иконки (Эмодзи) - Возвращены --- */
+        
         .floating-icon {
             position: absolute;
             font-size: 2.5rem;
@@ -221,7 +239,7 @@
         .icon-crown { bottom: 10%; right: 15%; }
         .icon-crown-sm1 { top: 20%; left: 40%; font-size: 1.5rem; }
         .icon-crown-sm2 { top: 20%; right: 40%; font-size: 1.5rem; }
-        */
+        
 
 
         /* --- Адаптация --- */
@@ -237,30 +255,22 @@
             .username-title { font-size: 2rem; }
             .username-subtitle { font-size: 1.25rem; }
             .username-plaque { padding: 1.5rem; }
-            /*
+            
             .floating-icon { font-size: 2rem; }
             .icon-trophy { top: 5%; left: 5%; }
             .icon-swords { top: 5%; right: 5%; }
             .icon-shield { bottom: 5%; left: 5%; }
             .icon-crown { bottom: 5%; right: 5%; }
-            */
+            
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <!-- Плавающие иконки (Эмодзи) - Убраны -->
-    <!--
-    <span class="floating-icon icon-trophy">🏆</span>
-    <span class="floating-icon icon-swords">⚔️</span>
-    <span class="floating-icon icon-shield">🛡️</span>
-    <span class="floating-icon icon-crown">👑</span>
-    <span class="floating-icon icon-crown-sm1">👑</span>
-    <span class="floating-icon icon-crown-sm2">👑</span>
-    -->
-
-
-    <!-- Экран 1: Выбор карты --><main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10">
+    <!-- Плавающие иконки (Эмодзи) - ПЕРЕМЕЩЕНЫ -->
+    
+    <!-- Экран 1: Выбор карты -->
+    <main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10"> <!-- ИСПРАВЛЕНИЕ: Добавлен ID и классы -->
         <div class="card-grid">
             
             <!-- Карточка 1: Бревно (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.1s">
@@ -302,10 +312,18 @@
     </main>
 
     <!-- Экран 2: Ввод никнейма (изначально скрыт) --><main id="username-screen" class="hidden">
+        <!-- Плавающие иконки (Эмодзи) - Теперь здесь -->
+        <span class="floating-icon icon-trophy">🏆</span>
+        <span class="floating-icon icon-swords">⚔️</span>
+        <span class="floating-icon icon-shield">🛡️</span>
+        <span class="floating-icon icon-crown">👑</span>
+        <span class="floating-icon icon-crown-sm1">👑</span>
+        <span class="floating-icon icon-crown-sm2">👑</span>
+
         <h1 class="username-title">CLASH ROYALE</h1>
         <div class="username-plaque">
             <h2 class="username-subtitle">Choose Your Nickname</h2>
-            <input type="text" class="username-input" placeholder="Zerith" value="Zerith">
+            <input type="text" class="username-input" placeholder="Enter nickname ...">
             <button class="confirm-button">
                 <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -320,10 +338,11 @@
         const okButton = document.getElementById('okButton');
         const cardSelectionScreen = document.getElementById('card-selection-screen');
         const usernameScreen = document.getElementById('username-screen');
-        const body = document.body; // Получаем элемент body
+        const confirmButton = document.querySelector('.confirm-button'); // Кнопка-галочка
+        const body = document.body; 
 
         const defaultBackground = 'url("https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg")';
-        const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")';
+        const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")'; // Фон для второго экрана
         
         cards.forEach(card => {
             card.addEventListener('click', () => {
@@ -339,7 +358,7 @@
             const selected = document.querySelector('.card-container.selected');
             
             if (selected) {
-                // Изменяем фон body для второго экрана
+                // Меняем фон
                 body.style.backgroundImage = usernameBackground;
 
                 // Скрываем экран выбора карт
@@ -347,7 +366,8 @@
                 
                 // Показываем экран ввода имени
                 usernameScreen.classList.remove('hidden');
-                usernameScreen.classList.add('flex', 'flex-col', 'items-center', 'justify-center');
+                usernameScreen.classList.add('flex');
+
 
             } else {
                 console.log("Карта не выбрана");
@@ -355,6 +375,23 @@
                 setTimeout(() => { okButton.style.animation = ''; }, 500);
             }
         });
+
+        // Клик на галку
+        confirmButton.addEventListener('click', () => {
+            // usernameScreen.style.display = 'none'; // Логика модального окна (убрана)
+            const nickname = document.querySelector('.username-input').value;
+            console.log("Никнейм:", nickname);
+            // Здесь может быть переход на следующий экран, если он будет
+        });
+
+        // Логика закрытия модального окна (убрана)
+        /*
+        usernameScreen.addEventListener('click', (e) => {
+            if (e.target === usernameScreen) {
+                usernameScreen.style.display = 'none';
+            }
+        });
+        */
 
         // Добавляем обработчики ошибок к изображениям, чтобы показать плейсхолдер
         document.querySelectorAll('.card-image').forEach(img => {
