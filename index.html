@@ -11,10 +11,29 @@
     
     <style>
         /* --- Анимации --- */
+        /* Обновленное фиолетово-розовое свечение - более яркое и глубокое */
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset; }
-            50% { box-shadow: 0 0 12px rgba(195, 106, 255, 0.7), 0 0 24px rgba(195, 106, 255, 0.5), 0 0 6px rgba(195, 106, 255, 0.3) inset; }
-            100% { box-shadow: 0 0 8px rgba(167, 0, 255, 0.4), 0 0 16px rgba(167, 0, 255, 0.2), 0 0 4px rgba(167, 0, 255, 0.1) inset; }
+            0% { 
+                box-shadow: 
+                    0 0 10px rgba(255, 0, 255, 0.7), /* Внутреннее свечение */
+                    0 0 20px rgba(255, 0, 255, 0.4), /* Среднее свечение */
+                    0 0 30px rgba(128, 0, 128, 0.8), /* Глубокое внешнее свечение */
+                    inset 0 0 10px rgba(255, 200, 255, 0.3); /* Внутренний блик */
+            }
+            50% { 
+                box-shadow: 
+                    0 0 15px rgba(255, 106, 255, 0.9), 
+                    0 0 30px rgba(255, 106, 255, 0.6), 
+                    0 0 50px rgba(167, 0, 255, 1),
+                    inset 0 0 15px rgba(255, 220, 255, 0.5); 
+            }
+            100% { 
+                box-shadow: 
+                    0 0 10px rgba(255, 0, 255, 0.7), 
+                    0 0 20px rgba(255, 0, 255, 0.4), 
+                    0 0 30px rgba(128, 0, 128, 0.8), 
+                    inset 0 0 10px rgba(255, 200, 255, 0.3); 
+            }
         }
 
         @keyframes shimmer {
@@ -22,15 +41,11 @@
             100% { transform: translateX(200%) skewX(-30deg); }
         }
 
+        /* Золотое свечение при выборе */
         @keyframes selectedPulse {
             0% { box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; }
             50% { box-shadow: 0 0 40px #FFD700, 0 0 80px rgba(255, 215, 0, 0.9), 0 0 20px #FFD700 inset; }
             100% { box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset; }
-        }
-        
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px #FFD700, 0 0 20px rgba(255, 215, 0, 0.5); }
-            50% { text-shadow: 0 0 15px #FFF8E1, 0 0 30px rgba(255, 215, 0, 0.9); }
         }
         
         @keyframes bounceIn {
@@ -41,7 +56,8 @@
 
         /* --- Основные стили --- */
         body {
-            background-image: url('https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg'); /* Фон по умолчанию для первого экрана */
+            /* Установлен фон для первого экрана */
+            background-image: url('https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -55,21 +71,125 @@
             min-height: 100vh;
             padding: 1rem; 
             position: relative; 
-            transition: background-image 0.5s ease-in-out; /* Плавный переход фона */
+            transition: background-image 0.5s ease-in-out; 
         }
 
-        /* --- Экран 1: Выбор Карты --- */
+        /* --- Элементы карты --- */
+        
+        .card-container {
+            position: relative;
+            /* Более сложная, металлическая рамка */
+            border: 4px solid #9400d3; /* Глубокий фиолетовый */
+            overflow: hidden; 
+            padding-bottom: 130%; 
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 20px; 
+            animation: pulseGlow 2s infinite ease-in-out;
+            /* Усиленное внешнее свечение */
+            box-shadow: 
+                0 0 10px rgba(255, 0, 255, 0.7), 
+                0 0 20px rgba(255, 0, 255, 0.4), 
+                0 0 30px rgba(128, 0, 128, 0.8),
+                inset 0 0 10px rgba(255, 200, 255, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.8); /* Четкая тень от карты */
+        }
+
+        /* Усиленный эффект мерцания (голографический) */
+        .card-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-100%) skewX(-30deg);
+            animation: shimmer 3s infinite linear;
+            animation-delay: var(--animation-delay, 0s);
+            z-index: 5;
+            opacity: 0.8; /* Более яркий */
+        }
+        
+        /* Гем/Камень сверху - более объемный и яркий */
+        .card-gem {
+            position: absolute;
+            top: -15px; 
+            left: 50%;
+            width: 40px; /* Увеличенный размер */
+            height: 40px;
+            background: linear-gradient(45deg, #ff00ff, #a700ff, #ff00ff); /* Градиент */
+            transform: translateX(-50%) rotate(45deg); 
+            border-radius: 10px;
+            z-index: 10;
+            box-shadow: 
+                0 0 5px rgba(255, 255, 255, 0.8) inset, /* Внутренний блик */
+                0 0 20px #FF00FF, 
+                0 0 40px #a700ff; 
+            border: 3px solid #fff; /* Четкий белый контур */
+        }
+        
+        /* Полоса Эликсира снизу - с 3D-эффектом */
+        .elixir-bar-container {
+            position: absolute;
+            bottom: -5px; /* Немного ниже, чтобы имитировать выступ */
+            left: 5%; /* Отступы для 3D эффекта */
+            width: 90%; /* Ширина контейнера */
+            height: 15%; 
+            background: #2a004a; /* Темная основа */
+            border-radius: 10px; 
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+            /* 3D-тень и выступ */
+            box-shadow: 
+                0 -5px 10px rgba(0, 0, 0, 0.5) inset, /* Внутренняя тень */
+                0 5px 15px rgba(167, 0, 255, 0.9), /* Внешнее свечение */
+                0 2px 0 #58008b; /* Имитация 3D-глубины */
+        }
+
+        .elixir-segment {
+            width: calc(100% / 8 - 4px); 
+            height: 90%;
+            border-radius: 4px;
+            background-color: #3d0066; /* Цвет пустого сегмента */
+            border: 2px solid #9932cc; /* Более яркий контур */
+        }
+
+        .elixir-segment.filled {
+            /* Яркий, почти белый градиент для "заряда" */
+            background: linear-gradient(to top, #ff00ff, #a700ff, #ffffff); 
+            box-shadow: 0 0 8px #ff00ff;
+        }
+
+
+        /* --- Остальные стили --- */
+
         .selected {
             box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255, 215, 0, 0.7), 0 0 15px #FFD700 inset !important; 
             animation: selectedPulse 1.5s infinite ease-in-out; 
             border-color: transparent;
-            overflow: visible !important; /* ИСПРАВЛЕНИЕ: Позволяем glow выйти за пределы */
+            overflow: visible !important; 
         }
 
-        /* Прячем эффект мерцания у выбранной карты, чтобы был виден inset-glow */
         .selected::after {
             display: none;
         }
+        
+        .card-container.selected::before {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 2rem;
+            color: #00e676;
+            text-shadow: 0 0 5px #000, 0 0 10px #69f0ae;
+            z-index: 10;
+        }
+
 
         .card-grid {
             display: grid;
@@ -80,36 +200,14 @@
             margin-bottom: 1.5rem; 
         }
 
-        .card-container {
-            position: relative;
-            border: 3px solid transparent; 
-            overflow: hidden; 
-            padding-bottom: 130%; 
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border-radius: 20px; 
-            animation: pulseGlow 2s infinite ease-in-out;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); 
-        }
-
-        .card-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: translateX(-100%) skewX(-30deg);
-            animation: shimmer 3s infinite linear;
-            animation-delay: var(--animation-delay, 0s);
-            z-index: 5;
-            opacity: 0.6; 
-        }
-
         .card-container:hover {
             transform: scale(1.05); 
-            box-shadow: 0 0 20px rgba(167, 0, 255, 0.8), 0 0 40px rgba(167, 0, 255, 0.6), 0 0 10px rgba(167, 0, 255, 0.4) inset, 0 10px 20px rgba(0, 0, 0, 0.6); 
+            /* Обновленный ховер с новым фиолетовым */
+            box-shadow: 
+                0 0 25px rgba(255, 0, 255, 1), 
+                0 0 50px rgba(255, 0, 255, 0.8), 
+                0 0 15px rgba(255, 0, 255, 0.7) inset, 
+                0 10px 20px rgba(0, 0, 0, 0.8); 
         }
         
         .card-container.selected:hover {
@@ -129,7 +227,6 @@
             z-index: 1; 
         }
         
-        /* --- Общая кнопка 'OK' / 'Готово' --- */
         .ok-button {
             background-color: #3b82f6; 
             color: white;
@@ -147,32 +244,27 @@
             background-color: #2563eb; 
             box-shadow: 0 0 15px #2563eb, 0 0 25px rgba(37, 99, 235, 0.8);
         }
-
-        /* --- Экран 2: Ввод Никнейма (адаптирован для мобильных) --- */
-        #username-screen {
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .username-title {
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            margin-bottom: 1rem;
-            color: #FFD700;
-            animation: textGlow 2s infinite ease-in-out; /* Мерцание для заголовка */
-        }
         
-        /* Уменьшаем максимальную ширину плашки для мобильных */
-        .username-plaque-wrapper {
-            width: 90%; /* Занимает 90% ширины экрана на мобильных */
-            max-width: 350px; /* Ограничиваем максимальную ширину */
+        /* Фон-оверлей удален */
+
+        /* ИСПРАВЛЕНИЕ: username-screen теперь фиксированный и скрыт, без затемнения фона */
+        #username-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Удалено background-color: rgba(0, 0, 0, 0.4); */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+        }
+
+        #username-screen.hidden {
+            display: none;
         }
 
         .username-plaque {
@@ -180,16 +272,18 @@
             border: 4px solid #6a0dad; 
             box-shadow: 0 0 20px #a700ff, 0 0 30px rgba(167, 0, 255, 0.5) inset; 
             border-radius: 1.5rem; 
-            padding: 1.5rem; /* Немного меньше отступы */
-            width: 100%;
+            padding: 2rem;
+            width: 90%; /* Устанавливаем ширину плашки */
+            max-width: 400px; /* Ограничиваем максимальную ширину */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem; /* Меньше расстояние между элементами */
+            gap: 1.5rem; 
+            z-index: 51; /* Выше фона */
         }
 
         .username-subtitle {
-            font-size: 1.25rem; /* Чуть меньше для мобильных */
+            font-size: 1.5rem;
             color: #FFD700;
             text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
         }
@@ -201,7 +295,7 @@
             border-radius: 0.75rem; 
             color: white;
             font-family: 'Inter', sans-serif;
-            font-size: 1.1rem; /* Чуть меньше размер шрифта */
+            font-size: 1.25rem;
             font-weight: 700;
             text-align: center;
             padding: 0.75rem;
@@ -215,7 +309,6 @@
             box-shadow: 0 0 25px #FFD700;
         }
 
-        /* Стиль для плейсхолдера */
         .username-input::placeholder {
             color: #9ca3af; 
             font-weight: 400; 
@@ -225,7 +318,7 @@
         .confirm-button {
             background: linear-gradient(to bottom, #00e676, #00c853); 
             border-radius: 0.75rem;
-            padding: 0.6rem; /* Меньше паддинг */
+            padding: 0.75rem;
             width: 80%;
             box-shadow: 0 0 20px #00e676, 0 5px 10px rgba(0, 0, 0, 0.3);
             border: 2px solid #69f0ae;
@@ -238,29 +331,28 @@
             box-shadow: 0 0 30px #00e676, 0 8px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* --- Плавающие иконки (Эмодзи) --- */
-        
         .floating-icon {
             position: absolute;
-            font-size: 2rem; /* Меньше для мобильных */
+            font-size: 2rem; 
             opacity: 0.8;
             z-index: 0;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
-        .icon-trophy { top: 5%; left: 10%; } /* Позиции адаптированы */
+        /* Иконки теперь в основном контейнере username-screen, который фиксированный */
+        .icon-trophy { top: 5%; left: 10%; } 
         .icon-swords { top: 5%; right: 10%; }
         .icon-shield { bottom: 5%; left: 10%; }
         .icon-crown { bottom: 5%; right: 10%; }
         .icon-crown-sm1 { top: 15%; left: 30%; font-size: 1.2rem; }
         .icon-crown-sm2 { top: 15%; right: 30%; font-size: 1.2rem; }
         
-        /* --- Модальное окно (Success Modal) --- */
         #success-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            /* Модальное окно сохраняет свое затемнение для контраста с фоном */
             background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
@@ -268,21 +360,20 @@
             z-index: 100;
         }
         
-        /* Добавляем явное правило для скрытия, если класс 'hidden' присутствует */
         #success-modal.hidden {
             display: none;
         }
 
 
         .success-box {
-            background-color: #2c0b6b; /* Темно-фиолетовый */
-            border: 5px solid #FFD700;
+            background-color: #2c0b6b; 
+            border: 5px solid #ff00ff; 
             border-radius: 1.5rem;
             padding: 2rem;
             text-align: center;
             animation: bounceIn 0.5s ease-out;
-            box-shadow: 0 0 30px #FFD700, 0 0 50px rgba(255, 215, 0, 0.5);
-            max-width: 90%; /* Адаптивность */
+            box-shadow: 0 0 30px #ff00ff, 0 0 50px rgba(255, 0, 255, 0.5);
+            max-width: 90%; 
         }
         
         .success-text {
@@ -296,7 +387,7 @@
         }
 
 
-        /* --- Адаптация для мобильных --- */
+        /* --- Адаптация --- */
         @media (max-width: 768px) {
             .card-grid {
                 grid-template-columns: repeat(2, 1fr); 
@@ -309,71 +400,62 @@
             .success-text {
                 font-size: 1.5rem;
             }
-            /* Позиции иконок для мобильных */
-            .icon-trophy { top: 3%; left: 5%; font-size: 1.8rem; }
-            .icon-swords { top: 3%; right: 5%; font-size: 1.8rem; }
-            .icon-shield { bottom: 3%; left: 5%; font-size: 1.8rem; }
-            .icon-crown { bottom: 3%; right: 5%; font-size: 1.8rem; }
-            .icon-crown-sm1 { top: 12%; left: 25%; font-size: 1rem; }
-            .icon-crown-sm2 { top: 12%; right: 25%; font-size: 1rem; }
+            .card-gem {
+                width: 25px;
+                height: 25px;
+            }
+            .elixir-bar-container {
+                padding: 3px;
+                gap: 2px;
+                height: 12%;
+            }
         }
-        /* Адаптация для очень узких экранов */
         @media (max-width: 380px) {
             .card-grid {
                 gap: 0.5rem;
             }
-            .username-title {
-                font-size: 2rem; /* Уменьшаем заголовок CLASH ROYALE */
-            }
-            .username-subtitle {
-                font-size: 1.1rem; /* Уменьшаем подзаголовок */
-            }
-            .username-input {
-                font-size: 1rem; /* Уменьшаем текст в инпуте */
-            }
             .success-text {
                 font-size: 1.2rem;
-            }
-            .success-emoji {
-                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
+    <!-- Фон-оверлей удален -->
+
     <!-- Экран 1: Выбор карты --><main id="card-selection-screen" class="flex flex-col items-center justify-center w-full z-10">
         <div class="card-grid">
             
-            <!-- Карточка 1: Бревно (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.1s">
+            <!-- Карточка 1: Бревно (Эликсир 4) --><div class="card-container" data-card="The Log" data-elixir="4" style="--animation-delay: 0.1s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/the-log.png" alt="The Log" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
             
-            <!-- Карточка 2: Мегарыцарь (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.3s">
+            <!-- Карточка 2: Мегарыцарь (Эликсир 7) --><div class="card-container" data-card="Mega Knight" data-elixir="7" style="--animation-delay: 0.3s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/mega-knight.png" alt="Mega Knight" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
-            <!-- Карточка 3: Всадница на баране (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.5s">
+            <!-- Карточка 3: Всадница на баране (Эликсир 5) --><div class="card-container" data-card="Ram Rider" data-elixir="5" style="--animation-delay: 0.5s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/ram-rider.png" alt="Ram Rider" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
-            <!-- Карточка 4: Громовержец (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.2s">
+            <!-- Карточка 4: Громовержец (Эликсир 4) --><div class="card-container" data-card="Electro Wizard" data-elixir="4" style="--animation-delay: 0.2s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/electro-wizard.png" alt="Electro Wizard" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
-            <!-- Карточка 5: Пламенный дракон (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.4s">
+            <!-- Карточка 5: Пламенный дракон (Эликсир 4) --><div class="card-container" data-card="Inferno Dragon" data-elixir="4" style="--animation-delay: 0.4s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/inferno-dragon.png" alt="Inferno Dragon" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
             
-            <!-- Карточка 6: Спарки (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.0s">
+            <!-- Карточка 6: Спарки (Эликсир 6) --><div class="card-container" data-card="Sparky" data-elixir="6" style="--animation-delay: 0.0s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/sparky.png" alt="Sparky" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
-            <!-- Карточка 7: Шахтёр (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.2s">
+            <!-- Карточка 7: Шахтёр (Эликсир 3) --><div class="card-container" data-card="Miner" data-elixir="3" style="--animation-delay: 0.2s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/miner.png" alt="Miner" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
 
-            <!-- Карточка 8: Кладбище (Ссылка обновлена) --><div class="card-container" style="--animation-delay: 0.4s">
+            <!-- Карточка 8: Кладбище (Эликсир 5) --><div class="card-container" data-card="Graveyard" data-elixir="5" style="--animation-delay: 0.4s">
                 <img src="https://cdn.royaleapi.com/static/img/cards-150/graveyard.png" alt="Graveyard" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/200x260/2a0a2a/FFD700?text=Error'; this.style.objectFit='contain';">
             </div>
         </div>
@@ -391,26 +473,21 @@
         <span class="floating-icon icon-crown">👑</span>
         <span class="floating-icon icon-crown-sm1">👑</span>
         <span class="floating-icon icon-crown-sm2">👑</span>
-
-        <!-- Убран <h1 class="username-title">CLASH ROYALE</h1> -->
         
-        <!-- Обертка для центрирования плашки на мобильных --><div class="username-plaque-wrapper">
-            <div class="username-plaque">
-                <h2 class="username-subtitle">Choose Your Nickname</h2>
-                <input type="text" class="username-input" placeholder="Enter nickname ...">
-                <button id="confirmButton" class="confirm-button">
-                    <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                </button>
-            </div>
+        <div class="username-plaque">
+            <h2 class="username-subtitle">Choose Your Nickname</h2>
+            <input type="text" class="username-input" placeholder="Enter nickname ...">
+            <button id="confirmButton" class="confirm-button">
+                <!-- SVG для галочки --><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </button>
         </div>
     </main>
 
     <!-- Модальное окно (Success Modal) --><div id="success-modal" class="hidden">
         <div class="success-box">
-            <div class="success-emoji">🎉</div>
-            <p class="success-text">ADDED TO YOUR ACCOUNT!</p>
+            <!-- Контент будет добавлен JS -->
         </div>
     </div>
 
@@ -420,40 +497,84 @@
         const okButton = document.getElementById('okButton');
         const cardSelectionScreen = document.getElementById('card-selection-screen');
         const usernameScreen = document.getElementById('username-screen');
+        // const backgroundOverlay = document.getElementById('background-overlay'); // УДАЛЕН
         const confirmButton = document.getElementById('confirmButton'); 
         const successModal = document.getElementById('success-modal');
         const body = document.body; 
 
         const defaultBackground = 'url("https://i.pinimg.com/1200x/d2/f9/01/d2f901e5b0eaa88451183e8af0a8b0db.jpg")';
+        /* ВОССТАНОВЛЕННЫЙ РАБОЧИЙ ЯРКИЙ ФОН для второго экрана */
         const usernameBackground = 'url("https://wallpapercave.com/wp/wp13459611.jpg")'; 
-        
+
+        // --- НОВАЯ ФУНКЦИЯ: ИНИЦИАЛИЗАЦИЯ КАРТ ---
+        function initializeCard(card) {
+            // Стоимость эликсира (по умолчанию 4, если не указано)
+            const elixirCost = parseInt(card.getAttribute('data-elixir') || 4, 10);
+            const imgElement = card.querySelector('.card-image');
+
+            // 1. Добавляем Гем (всегда перед изображением)
+            const gemDiv = document.createElement('div');
+            gemDiv.className = 'card-gem';
+            card.insertBefore(gemDiv, imgElement); 
+
+            // 2. Добавляем Контейнер Полосы Эликсира
+            const barContainer = document.createElement('div');
+            barContainer.className = 'elixir-bar-container';
+
+            // 3. Заполняем Полосу Эликсира (8 сегментов)
+            // Использование 8 сегментов для общей стилистики
+            for (let i = 1; i <= 8; i++) {
+                const segment = document.createElement('div');
+                // Если индекс сегмента меньше или равен стоимости, он "заполнен"
+                if (i <= elixirCost) {
+                     segment.className = 'elixir-segment filled';
+                } else {
+                     segment.className = 'elixir-segment';
+                }
+                barContainer.appendChild(segment);
+            }
+            card.appendChild(barContainer); 
+        }
+
+        // Выполняем инициализацию для всех карт при загрузке
+        // Используем DOMContentLoaded, чтобы убедиться, что элементы существуют
+        document.addEventListener('DOMContentLoaded', () => {
+             cards.forEach(initializeCard);
+        });
+        // --- КОНЕЦ НОВОЙ ФУНКЦИИ ---
+
+
         cards.forEach(card => {
             card.addEventListener('click', () => {
-                const isSelected = card.classList.contains('selected');
-                cards.forEach(c => c.classList.remove('selected'));
-                if (!isSelected) {
-                    card.classList.add('selected');
-                }
+                // Изменено: теперь просто переключаем класс 'selected' (Multi-Select)
+                card.classList.toggle('selected');
             });
         });
 
         okButton.addEventListener('click', function() {
-            const selected = document.querySelector('.card-container.selected');
+            const selectedCards = document.querySelectorAll('.card-container.selected');
             
-            if (selected) {
-                // Меняем фон
+            if (selectedCards.length > 0) {
+                // 1. Меняем фон body на фон второго экрана
                 body.style.backgroundImage = usernameBackground;
 
-                // Скрываем экран выбора карт
+                // 2. Скрываем экран выбора карт
                 cardSelectionScreen.classList.add('hidden');
                 
-                // Показываем экран ввода имени
+                // 3. Показываем экран ввода имени
+                // backgroundOverlay.classList.remove('hidden'); // УДАЛЕНО
                 usernameScreen.classList.remove('hidden');
                 usernameScreen.classList.add('flex');
-
+                
+                // Фокусируемся на поле ввода
+                const usernameInput = document.querySelector('.username-input');
+                if (usernameInput) {
+                    usernameInput.focus();
+                }
 
             } else {
                 console.log("Карта не выбрана");
+                // Анимация "покачивания"
                 okButton.style.animation = 'shake 0.5s ease';
                 setTimeout(() => { okButton.style.animation = ''; }, 500);
             }
@@ -463,18 +584,35 @@
         confirmButton.addEventListener('click', () => {
             const nicknameInput = document.querySelector('.username-input');
             const nickname = nicknameInput.value.trim();
+            const selectedCards = document.querySelectorAll('.card-container.selected');
+            const cardNames = Array.from(selectedCards).map(card => card.getAttribute('data-card'));
             
             if (nickname.length > 0) {
-                console.log("Никнейм:", nickname);
+                console.log(`[Готово] Никнейм: ${nickname}, Выбранные Карты: ${cardNames.join(', ')}`);
+                
+                // Скрываем экран ввода никнейма
+                usernameScreen.classList.add('hidden');
+                // backgroundOverlay.classList.add('hidden'); // УДАЛЕНО
+
+                // Восстанавливаем статическое сообщение, как просил пользователь
+                const successBox = document.querySelector('.success-box');
+                successBox.innerHTML = `
+                    <div class="success-emoji">✅</div> 
+                    <p class="success-text">ADDED TO YOUR ACCOUNT!</p>
+                `;
+
                 // Показываем модальное окно
                 successModal.classList.remove('hidden');
                 
-                // Скрываем модальное окно через 2 секунды
+                // Скрываем модальное окно через 3 секунды
                 setTimeout(() => {
                     successModal.classList.add('hidden');
-                }, 2000);
+                    // Опционально: можно вернуться к первому экрану и сбросить выбор
+                    // body.style.backgroundImage = defaultBackground;
+                    // cardSelectionScreen.classList.remove('hidden');
+                }, 3000);
             } else {
-                // Если никнейм пуст, можно добавить визуальный фидбек
+                // Если никнейм пуст, добавляем визуальный фидбек
                 nicknameInput.style.border = '3px solid red';
                 nicknameInput.style.boxShadow = '0 0 15px red';
                 setTimeout(() => {
