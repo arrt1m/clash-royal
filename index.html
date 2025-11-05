@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Добавляем анимацию пульсации свечения */
         @keyframes pulseGlow {
             0% {
                 box-shadow: 0 0 10px #a700ff, 0 0 20px #a700ff, 0 0 5px #a700ff inset;
@@ -23,7 +22,6 @@
             }
         }
 
-        /* Добавляем анимацию блика */
         @keyframes shimmer {
             0% {
                 transform: translateX(-100%) skewX(-30deg);
@@ -33,6 +31,11 @@
             }
         }
 
+        .selected {
+            box-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 10px #FFD700 inset !important; 
+            animation: none;
+            border-color: #FFD700;
+        }
 
         body {
             background-image: url('https://wallpapercave.com/wp/wp13459611.jpg'); /* Тот же фон */
@@ -41,45 +44,37 @@
             background-repeat: no-repeat;
             font-family: 'Luckiest Guy', cursive;
             color: #FFD700;
-            /* overflow: hidden;  УБИРАЕМ ЭТО, чтобы разрешить прокрутку */
-            overflow-x: hidden; /* Разрешаем верт. прокрутку, запрещаем гориз. */
+            overflow-x: hidden; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 1rem; /* Добавим отступы */
+            padding: 1rem; 
         }
 
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 колонки */
-            gap: 1.5rem; /* Увеличил зазор для светящихся карт */
-            max-width: 900px; /* Ограничим ширину сетки */
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1.5rem; 
+            max-width: 900px; 
             width: 100%;
-            margin-bottom: 1.5rem; /* Отступ от кнопки */
+            margin-bottom: 1.5rem; 
         }
 
         .card-container {
             position: relative;
-            /* background: #000;  Убираем черный фон */
             border: 3px solid #6a0dad; /* Фиолетовая рамка */
             overflow: hidden; /* Важно для border-radius и shimmer */
             padding-bottom: 130%; /* Соотношение сторон для карт */
             cursor: pointer;
-            transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
-            
+            transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             border-radius: 20px; /* Скругленные углы */
-            
-            /* Применяем анимацию пульсации */
             animation: pulseGlow 2s infinite ease-in-out;
-
-            /* Удаляем старый clip-path */
             -webkit-clip-path: none;
             clip-path: none;
         }
 
-        /* Псевдо-элемент для блика */
         .card-container::after {
             content: '';
             position: absolute;
@@ -94,93 +89,57 @@
                 rgba(255, 255, 255, 0) 100%
             );
             transform: translateX(-100%) skewX(-30deg);
-            /* Применяем кастомную задержку */
             animation: shimmer 3s infinite linear;
             animation-delay: var(--animation-delay, 0s);
-            z-index: 5; /* Выше картинки, ниже камня */
+            z-index: 5; /* Выше картинки */
             opacity: 0.7;
         }
 
         .card-container:hover {
             transform: scale(1.03);
-            /* Усилим свечение при наведении (анимация продолжается) */
             box-shadow: 0 0 15px #a700ff, 0 0 30px #a700ff, 0 0 8px #a700ff inset;
+        }
+        
+        .card-container.selected:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 10px #FFD700 inset !important;
         }
 
         .card-image {
-            position: absolute; /* Располагаем под оверлеем */
+            position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center; /* Центрируем */
-            border-radius: 18px; /* Чтобы вписаться во внутреннюю часть рамки */
-            z-index: 1; /* Под UI */
+            object-position: center; 
+            border-radius: 18px; 
+            z-index: 1; 
         }
         
-        /* Обновленный "Камень эликсира" - УДАЛЕНО */
-        /* .elixir-gem {
-            position: absolute;
-            top: 10px; 
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 36px; 
-            height: 36px; 
-            background: radial-gradient(circle, #d98bff 0%, #a700ff 70%); 
-            border: 2px solid white; 
-            border-radius: 0; 
-            
-            box-shadow: 0 0 8px rgba(167, 0, 255, 0.7); 
-            z-index: 10; 
-            
-            
-            -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        } */
-
-        /* .elixir-gem-text {
-            color: white;
-            font-size: 1.25rem; 
-            font-weight: bold;
-            text-shadow: 1px 1px 2px #000;
-        } */
-
-        /* УДАЛЕНО: .card-progress-text */
-        
         .ok-button {
-            background-color: #3b82f6; /* Синий цвет Tailwind */
+            background-color: #3b82f6; 
             color: white;
-            font-size: 1.75rem; /* Большой размер шрифта */
-            padding: 0.75rem 3rem; /* Большие отступы */
-            border-radius: 9999px; /* Полностью круглые углы */
-            box-shadow: 0 0 10px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.7); /* Неоновое свечение */
+            font-size: 1.75rem; 
+            padding: 0.75rem 3rem; 
+            border-radius: 9999px; 
+            box-shadow: 0 0 10px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.7); 
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Luckiest Guy', cursive;
-            border: 2px solid #60a5fa; /* Светлая рамка */
+            border: 2px solid #60a5fa; 
         }
 
         .ok-button:hover {
-            background-color: #2563eb; /* Темнее синий при наведении */
+            background-color: #2563eb; 
             box-shadow: 0 0 15px #2563eb, 0 0 25px rgba(37, 99, 235, 0.8);
         }
 
         /* Адаптация для мобильных */
         @media (max-width: 768px) {
             .card-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 колонки на мобильных */
-                gap: 1rem; /* Уменьшаем зазор */
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 1rem; 
             }
-            /* Удаляем старые, ненужные стили для elixir-gem */
-            /* .elixir-gem {
-                width: 32px;
-                height: 32px;
-                top: 8px;
-            } */
-            /* .elixir-gem-text {
-                font-size: 1rem;
-            } */
-            /* УДАЛЕНО: .card-progress-text */
             .ok-button {
                 font-size: 1.5rem;
                 padding: 0.6rem 2.5rem;
@@ -191,52 +150,37 @@
 <body class="bg-gray-900 text-white">
 
     <div class="card-grid">
+        
         <!-- Карточка 1: Бандитка --><div class="card-container" style="--animation-delay: 0.1s">
-            <!-- Камень эликсира удален -->
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/e/e7/%D0%91%D0%B0%D0%BD%D0%B4%D0%B8%D1%82%D0%BA%D0%B0.png/revision/latest?cb=20220425054754&path-prefix=ru" alt="Бандитка" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
+            <img src="https://cdn.statsroyale.com/images/cards/full/bandit.png" alt="Бандитка" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
         </div>
         
         <!-- Карточка 2: Адская гончая --><div class="card-container" style="--animation-delay: 0.3s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/7/70/%D0%90%D0%B4%D1%81%D0%BA%D0%B0%D1%8F_%D0%B3%D0%BE%D0%BD%D1%87%D0%B0%D1%8F.png/revision/latest?cb=20220425054748&path-prefix=ru" alt="Адская гончая" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
 
         <!-- Карточка 3: Бревно --><div class="card-container" style="--animation-delay: 0.5s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/d/da/%D0%91%D1%80%D0%B5%D0%B2%D0%BD%D0%BE.png/revision/latest?cb=20220425054758&path-prefix=ru" alt="Бревно" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
 
         <!-- Карточка 4: Громовержец --><div class="card-container" style="--animation-delay: 0.2s">
-            <!-- Камень эликсира удален -->
-            <img src="https://static.wikia.nocookie.net/clash-royale/images/e/ed/%D0%93%D1%80%D0%BE%D0%BC%D0%BE%D0%B2%D0%B5%D1%80%D0%B6%D0%B5%D1%86.png/revision/latest?cb=20220425054814&path-prefix=ru" alt="Громовержец" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
+            <img src="https://static.wikia.nocookie.net/clash-royale/images/e/ed/%D0%93%D1%80%D0%BE%D0%BC%D0%BE%D0%B2%D0%B5%D1%80%D0%B6%D0%B5%D1%86.png/revision/latest?cb=20220425054814&path-prefix=ru" alt="Громовержец" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
         </div>
 
         <!-- Карточка 5: Королевский призрак --><div class="card-container" style="--animation-delay: 0.4s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/1/1c/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D0%B5%D0%B2%D1%81%D0%BA%D0%B8%D0%B9_%D0%BF%D1%80%D0%B8%D0%B7%D1%80%D0%B0%D0%BA.png/revision/latest?cb=20220425054830&path-prefix=ru" alt="Королевский призрак" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
         
         <!-- Карточка 6: Спарки --><div class="card-container" style="--animation-delay: 0.0s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/2/20/%D0%A1%D0%BF%D0%B0%D1%80%D0%BA%D0%B8.png/revision/latest?cb=20220425055024&path-prefix=ru" alt="Спарки" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
 
         <!-- Карточка 7: Принцесса --><div class="card-container" style="--animation-delay: 0.2s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/0/02/%D0%9F%D1%80%D0%B8%D0%BD%D1%86%D0%B5%D1%81%D1%81%D0%B0.png/revision/latest?cb=20220425055008&path-prefix=ru" alt="Принцесса" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
 
         <!-- Карточка 8: Мегарыцарь --><div class="card-container" style="--animation-delay: 0.4s">
-            <!-- Камень эликсира удален -->
             <img src="https://static.wikia.nocookie.net/clash-royale/images/d/d2/%D0%9C%D0%B5%D0%B3%D0%B0%D1%80%D1%8B%D1%86%D0%B0%D1%80%D1%8C.png/revision/latest?cb=20220425054945&path-prefix=ru" alt="Мегарыцарь" class="card-image" onerror="this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjmE5rPwAFqgJYX6Wq6wAAAABJRU5ErkJggg==';">
-            <!-- Текст прогресса удален -->
         </div>
     </div>
 
@@ -245,8 +189,22 @@
     </button>
 
     <script>
+        const cards = document.querySelectorAll('.card-container');
+        
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const isSelected = card.classList.contains('selected');
+                
+                cards.forEach(c => c.classList.remove('selected'));
+                
+                if (!isSelected) {
+                    card.classList.add('selected');
+                }
+            });
+        });
+
         document.getElementById('okButton').addEventListener('click', function() {
-            window.location.href = './index.html'; // Переход на страницу выбора никнейма
+            // window.location.href = './index.html'; 
         });
     </script>
 </body>
